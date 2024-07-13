@@ -206,7 +206,7 @@ $('#example').DataTable({
 
 	<center id="sectionRight">
 
-		<a href="home.php"><img src="../img/fail.png" width="30" height="20"><input style="color: #fff;background-color: red;" type="submit" value="رجوع" /></a>
+		<a href="home.php"><img src="../img/fail.png" width="30" height="20"><input style="color: #fff;background-color:rgb(192,31,47);" type="submit" value="رجوع" /></a>
 
 		<?php
 		if(isset($_GET['edid']))

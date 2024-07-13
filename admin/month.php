@@ -56,7 +56,7 @@ body{
 
 
 
-	<form action="month.php" method="post">
+<form action="month.php" method="post">
 	النادل : 
 	<select name="key" style="width: 80px;text-align: center;padding:5px;font-weight: bold;border-radius:10px;">
 		<option value="0"> الكل </option>
@@ -77,9 +77,22 @@ body{
 <button type="submit" name="filterdate">  بحث  </button>
 	</form>
 
+		<?php 
+		if(isset($_POST['filterdate'])){
+			$filter = $_POST['key']; 
+			$from   = $_POST['from']; 
+			$to     = $_POST['to']; 
+		?>
+
+		<h2 style="color: #000;"> التقارير من تاريخ <?php echo $from; ?> الي تاريخ  <?php echo $to; ?> </h2>
+
+		<?php
+		}else{
+		?>
+
 		<h2 style="color: #000;"> التقارير الشهرى لشهر <?php echo date("m"); ?></h2>
 
-
+		<?php } ?>
 	<table style="background-color: #fff;box-shadow: 2px 2px 5px black;padding: 5px;border-radius: 0px;color: #000;" width="80%">
 			<tr>
 				<th style="border-bottom: solid 1px  black;"> #الرقم </th>
@@ -92,18 +105,15 @@ body{
 
 
 
-if(isset($_POST['filterdate'])){
-			$filter = $_POST['key'] ; 
-			$from = $_POST['from'] ; 
-			$to = $_POST['to'] ; 
-
-
+	if(isset($_POST['filterdate'])){
+				
 			if($filter == "0"){
-				$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE MONTH(date) = MONTH(NOW()) GROUP by product ");
+			 $q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE `date` BETWEEN '$from' AND '$to' GROUP by product ");
 			}else{
-				$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE MONTH(date) = MONTH(NOW()) and waiter_id = $filter GROUP by product");
+			$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE  `waiter_id` LIKE '$filter' and `date` BETWEEN '$from' AND '$to' GROUP by product ");
 			}
-		}
+
+		}else{
 
 
 		if(isset($_POST['filter'])){
@@ -124,6 +134,8 @@ if(isset($_POST['filterdate'])){
 		}else{
 			$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE MONTH(date) = MONTH(NOW()) and waiter_id = $filter GROUP by product");
 		}
+		}
+
 		}
 
 		$sum = 0 ; 
@@ -149,7 +161,7 @@ if(isset($_POST['filterdate'])){
 			<th>  </th>
 			<th> <?php echo $sum." جنيه "; 
 			
-			if(isset($_POST['filterwaiter'])){
+			if(isset($_POST['filterwaiter']) || isset($_POST['filterdate'])){
 				$filter = $_POST['key'] ; 
 				if($filter != "0"){
 					$present = "";

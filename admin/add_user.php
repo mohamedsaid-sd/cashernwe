@@ -176,7 +176,7 @@ $('#example').DataTable({
 				<th style="text-align: center;"> '.$row['name'].' </th>
 				<th style="text-align: center;"> '.$row['username'].' </th>
 				<th style="text-align: center;"> '.$row['pass'].'</th>
-				<th style="text-align: center;"><a href="add_user.php?edid='.$row['id'].'"> <button> تعديل </button></a> <button style="background-color:red;"> حذف </button> </th>
+				<th style="text-align: center;"><a href="add_user.php?edid='.$row['id'].'"> <button> تعديل </button></a> <button style="background-color: rgb(192,31,47);color:#fff;font-weight: normal;"> حذف </button> </th>
 			</tr>
 			';
 			$i++;
@@ -189,7 +189,7 @@ $('#example').DataTable({
 
 		<h2> إضافة مستخدم جديد </h2>
 
-		<a href="home.php"><img src="../img/fail.png" width="30" height="20"><input style="color: #fff;background-color: red;" type="submit" value="رجوع" /></a>
+		<a href="home.php"><img src="../img/fail.png" width="30" height="20"><input style="color: #fff;background-color:  rgb(192,31,47);" type="submit" value="رجوع" /></a>
 
 
 		<?php 

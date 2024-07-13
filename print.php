@@ -51,6 +51,14 @@ if(!isset($_SESSION['sname'])){
 	$waiter = $_GET['waiter'];
 
 
+
+	$waiter_name = "";
+	$query_w = mysqli_query( $conn , "SELECT * FROM `waiter` WHERE `id` = $waiter");
+	while ($roww = mysqli_fetch_array($query_w)) {
+		$waiter_name = $roww['name'];
+	}
+
+
 	  ?>  
 	
 
@@ -69,21 +77,21 @@ if(!isset($_SESSION['sname'])){
 			$oid = "0".$oid;
 		}
 
-		echo '<center id="ppp"><h3>محل عبد الله عبيد السبيعي للدواجن <br/><hr/>';
+		echo '<center id="ppp">
+		<img src="img/logo.jpg" width="150"/>
+		<h3>  رويا كافى ROYA <br/><hr/>';
 
 			// echo "</h3><img src='barcode.php?codetype=Code39&&size=20&text=".$oid."'><br/>
 			// فاتورة رقم : ".$oid." <br/> ";
 			echo "</h3>فاتورة رقم : ".$oid." 
-			<img style='float:right;' src='barcode.php?codetype=Code39&&size=20&text=".$oid."'><br/>
-			<br/> ";
-
-			echo '	الرقم الضريبي : 1234567890 <br/><hr/>
-			<h4 style="border:solid 2px black ;"> فاتورة ضريبة مبسطة : مبيعات  </h4>
+			<br/>";
+			echo '<hr/>
+			<h4 style="border:solid 2px black ;"> فاتورة مبيعات مبسطة  </h4>
 			';
 		//echo "<img style='height:10px;' id='qr' alt='testing' src='barcode.php?codetype=Code39&size=40&text=".$oid."&print=true'/>";
 		
 			echo " التاريخ :  ".date("Y/m/d h:i:s");
-		echo '<br/>جوال : 0569182212 س ت 2251497722 <hr/>
+		echo '<br/>جوال : 249909642222 <hr/>
 		<table width="90%" style="color: #000;">
 		<tr>
 			<th> المنتج </th>
@@ -184,7 +192,7 @@ if(!isset($_SESSION['sname'])){
 		<td colspan="3">
 		<br/><br/>
 		<center>
-		<img src="img/qr.jpg" style="width:80%;hight:80px;" />
+		النادل : '.$waiter_name.'
 		</center>
 		<hr/>
  
