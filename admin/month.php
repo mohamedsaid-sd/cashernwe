@@ -54,6 +54,29 @@ body{
 	</select> <button type="submit" name="filterwaiter"> نادل محدد  </button>
 	</form>
 
+
+
+	<form action="month.php" method="post">
+	النادل : 
+	<select name="key" style="width: 80px;text-align: center;padding:5px;font-weight: bold;border-radius:10px;">
+		<option value="0"> الكل </option>
+		<?php
+			include('../config.php');
+			$q = mysqli_query($conn,"SELECT * FROM `waiter`");
+			while ($row = mysqli_fetch_array($q)) {
+		?>
+		<option value="<?php echo $row['id']; ; ?>"> <?php echo $row['name']; ?> </option>
+		<?php } ?> 
+	</select> 
+من
+<input type="date" id="from" name="from" max="2222-05-26">
+
+الي
+<input type="date" id="to" name="to" max="2222-05-26">
+
+<button type="submit" name="filterdate">  بحث  </button>
+	</form>
+
 		<h2 style="color: #000;"> التقارير الشهرى لشهر <?php echo date("m"); ?></h2>
 
 
@@ -66,6 +89,22 @@ body{
 			</tr>
 		<?php
 		include('../config.php');
+
+
+
+if(isset($_POST['filterdate'])){
+			$filter = $_POST['key'] ; 
+			$from = $_POST['from'] ; 
+			$to = $_POST['to'] ; 
+
+
+			if($filter == "0"){
+				$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE MONTH(date) = MONTH(NOW()) GROUP by product ");
+			}else{
+				$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE MONTH(date) = MONTH(NOW()) and waiter_id = $filter GROUP by product");
+			}
+		}
+
 
 		if(isset($_POST['filter'])){
 			$filter = $_POST['key'] ; 
