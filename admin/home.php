@@ -26,6 +26,8 @@ if(isset($_GET['exit'])){
 	<h1 style="color: #333;"> الرئيسية </h1>
 	<a href="add_product.php"><button class="btn"> إضافة منتج </button></a><br/>
 	<a href="add_user.php"><button class="btn"> إضافة مستخدم </button></a><br/>
+		<a href="add_waiter.php"><button class="btn"> اضافة نادل </button></a><br/>
+
 	<a href="reports.php"><button class="btn"> إجمالي المبيعات </button></a><br/>
 	<a href="home.php?exit=0"><button class="btn"> خروج </button></a>
 	<br/>

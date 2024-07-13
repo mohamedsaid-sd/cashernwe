@@ -37,6 +37,21 @@ if(!isset($_SESSION['sid'])){
 	</select> <button type="submit" name="filter"> مستخدم محدد </button>
 	</form>
 
+
+	<form action="day.php" method="post">
+	النادل : 
+	<select name="key" style="width: 80px;text-align: center;padding:5px;font-weight: bold;border-radius:10px;">
+		<option value="0"> الكل </option>
+		<?php
+			include('../config.php');
+			$q = mysqli_query($conn,"SELECT * FROM `waiter`");
+			while ($row = mysqli_fetch_array($q)) {
+		?>
+		<option value="<?php echo $row['id']; ; ?>"> <?php echo $row['name']; ?> </option>
+		<?php } ?> 
+	</select> <button type="submit" name="filterwaiter">  حدد النادل </button>
+	</form>
+
 	<h2 style="color: #000;"> التقارير اليومي ليوم <?php echo date("d")-1; ?></h2>
 	<table style="background-color: #fff;box-shadow: 2px 2px 5px black;padding: 5px;border-radius: 0px;color: #000;" width="80%">
 			<tr>
@@ -56,6 +71,16 @@ if(!isset($_SESSION['sid'])){
 			}
 		}else{
 			$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE DATE(date) = DATE(NOW()) GROUP by product ");
+		}
+
+
+			if(isset($_POST['filterwaiter'])){
+			$filter = $_POST['key'] ; 
+			if($filter == "0"){
+				$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE DATE(date) = DATE(NOW()) GROUP by product ");
+			}else{
+				$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE DATE(date) = DATE(NOW()) and waiter_id =$filter GROUP by product");
+			}
 		}
 		$sum = 0 ; 
 		$i = 1 ;
