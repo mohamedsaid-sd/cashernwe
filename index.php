@@ -46,20 +46,21 @@ if(isset($_POST['login'])){
 </style>
 <body>
 <?php include('config.php'); ?>
-<center>
-	<h1 style="color:#000;color: #a12; text-shadow: 2px 2px 5px gray;font-size: 50px;">  نظام ادارة الكاشير Casher </h1>
+<center style="margin-top: 0px;">
+	
+	<!-- <h1 style="color:#000;color: #a12; text-shadow: 2px 2px 5px gray;font-size: 50px;">  نظام ادارة الكاشير Casher </h1> -->
 	
 
-	<img src="img/login.png" width="450" height="320" style="margin: 50px;">
+	<img src="img/logo.jpg" width="450" height="420" style="margin: 50px;">
 
-	<form action="index.php" method="post" style="float: right;margin-right:300px;margin-top: 100px;">
+	<form action="index.php" method="post" style="float: right;margin-right:300px;margin-top: 200px;">
 	
 		<b> إسم المستخدم </b><br/>
 		<input type="text" name="user" placeholder="ادخل إسم المستخدم" /><br/>
 		<b> كلمة المرور </b><br/>
 		<input type="password" name="pass" placeholder="ادخل كلمة المرور" /><br/><br/>
 		<input style="background-color: green;padding: 10px;color: #fff;border: none;width: 100px;font-size: 25px;" type="submit" name="login" value="دخول" />
-		<input style="background-color: red;padding: 10px;color: #fff;border: none;width: 100px;border-radius: 10px;font-size: 25px;" type="reset" name="" value="الغاء">
+		<input style="background-color: rgb(192,31,47);padding: 10px;color: #fff;border: none;width: 100px;border-radius: 10px;font-size: 25px;" type="reset" name="" value="الغاء">
 		<br/>
 	</form>
 </center>

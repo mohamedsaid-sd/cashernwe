@@ -200,7 +200,7 @@ $('#example').DataTable({
 		$q = mysqli_query($conn,"SELECT * FROM `users` where id = $id ");
 		while ($row = mysqli_fetch_array($q)) {
 		 ?>
-		<form action="" method="post">
+		<form action="add_user.php" method="post">
 		<h2 style="color: #fff;"> تعديل بيانات مستخدم </h2>
 		<input hidden type="text" placeholder="أدخل إسم التصنيف" name="id" value="<?php echo $row['id']; ?>" />
 		<input type="text" placeholder=" الأسم " name="name" value="<?php echo $row['name']; ?>"/><br/>

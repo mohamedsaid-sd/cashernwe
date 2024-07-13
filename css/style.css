@@ -57,6 +57,9 @@
 .btn{
 	width: 200px;
 	font-size: 30px;
+	background-color: rgb(120,77,42);
+	color: #fff;
+	font-weight: normal;
 }
 
 a{
@@ -139,7 +142,7 @@ table td{
 	position: fixed;
 	bottom : 0px; 
 	padding: 10px;
-	background-color: #a10;
+	background-color: rgb(120,77,42);
 	width: 110%;
 	color: #fff;
 	font-size: 22px;

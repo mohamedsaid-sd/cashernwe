@@ -48,6 +48,7 @@ if(!isset($_SESSION['sname'])){
 	$orderid = 0;
 	$orderidint = 0;
 	$dis = $_GET['dis'];
+	$waiter = $_GET['waiter'];
 
 
 	  ?>  
@@ -216,7 +217,7 @@ if(event){
 <?php 
 $sid = $_SESSION['sid'] ; 
 include('config.php');
-mysqli_query( $conn , "INSERT INTO orders ( order_id , product , qount , price , sumation , total , 	user_id , date ) SELECT '$orderid' , product , qount , price , total , '$sumafterdiscount' , $sid ,CURRENT_TIMESTAMP FROM cart");
+mysqli_query( $conn , "INSERT INTO orders ( order_id , product , qount , price , sumation , total , user_id , 	waiter_id , date ) SELECT '$orderid' , product , qount , price , total , '$sumafterdiscount' , $sid , $waiter ,CURRENT_TIMESTAMP FROM cart");
 mysqli_query( $conn , "TRUNCATE cart");
 echo '<meta http-equiv="refresh" content="0;url=home.php?sucsess=0">';
 ?>

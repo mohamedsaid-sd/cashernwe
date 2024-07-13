@@ -190,11 +190,11 @@ $('#example').DataTable({
 			$alert = '" هل تريد حذف المنتج  ? "';
 
 			echo "<tr>
-				<th style='text-align: center;'> ".$row['id']." </th>
+				<th style='text-align: center;'> ".$i." </th>
 				<th style='text-align: center;'> ".$row['barcode']." </th>
 				<th style='text-align: center;'> ".$row['name']." </th>
 				<th style='text-align: center;'> ".$row['price']." </th>
-				<th style='text-align: center;'> <a href='add_product.php?edid=".$row['id']."'> <button> تعديل </button></a> <a href='add_product.php?did=".$row['id']."'><button style='background-color:red;' onclick='return confirm(".$alert.")'> حذف </button></a> </th>
+				<th style='text-align: center;'> <a href='add_product.php?edid=".$row['id']."'> <button> تعديل </button></a> <a href='add_product.php?did=".$row['id']."'><button style='background-color:rgb(192,31,47);color:#fff;font-weight:normal;' onclick='return confirm(".$alert.")'> حذف </button></a> </th>
 				<td> </td>
 			</tr>
 			";

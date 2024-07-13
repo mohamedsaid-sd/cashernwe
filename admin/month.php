@@ -24,9 +24,9 @@ body{
 	<center>
 		<a href="reports.php"><img src="../img/fail.png" width="30" height="20"><input style="color: #fff;background-color: red;" type="submit" value="خروج" /></a>
 		<form action="month.php" method="post">
-	المستخدمين : 
+	الكاشير : 
 	<select name="key" style="width: 80px;text-align: center;padding:5px;font-weight: bold;border-radius:10px;">
-		<option value="0"> الكل </option>
+		<option value="0"> الكاشير </option>
 		<?php
 			include('../config.php');
 			$q = mysqli_query($conn,"SELECT * FROM `users`");
@@ -34,7 +34,7 @@ body{
 		?>
 		<option value="<?php echo $row['id']; ; ?>"> <?php echo $row['name']; ?> </option>
 		<?php } ?> 
-	</select> <button type="submit" name="filter"> مستخدم محدد </button>
+	</select> <button type="submit" name="filter"> كاشير محدد </button>
 	</form>
 
 
@@ -51,7 +51,7 @@ body{
 		?>
 		<option value="<?php echo $row['id']; ; ?>"> <?php echo $row['name']; ?> </option>
 		<?php } ?> 
-	</select> <button type="submit" name="filterwaiter">  حدد النادل </button>
+	</select> <button type="submit" name="filterwaiter"> نادل محدد  </button>
 	</form>
 
 		<h2 style="color: #000;"> التقارير الشهرى لشهر <?php echo date("m"); ?></h2>
@@ -67,15 +67,6 @@ body{
 		<?php
 		include('../config.php');
 
-		if(isset($_POST['filterwaiter'])){
-			$filter = $_POST['key'] ; 
-			if($filter == "0"){
-				$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE MONTH(date) = MONTH(NOW()) GROUP by product ");
-			}else{
-				$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE MONTH(date) = MONTH(NOW()) and waiter_id =$filter GROUP by product");
-			}
-		}
-
 		if(isset($_POST['filter'])){
 			$filter = $_POST['key'] ; 
 			if($filter == "0"){
@@ -85,6 +76,15 @@ body{
 			}
 		}else{
 			$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE MONTH(date) = MONTH(NOW()) GROUP by product ");
+		}
+
+		if(isset($_POST['filterwaiter'])){
+		$filter = $_POST['key'] ; 
+		if($filter == "0"){
+			$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE MONTH(date) = MONTH(NOW()) and waiter_id LIKE '0' GROUP by product ");
+		}else{
+			$q = mysqli_query($conn,"SELECT * , SUM(qount) as 'qount' , COUNT(product) as 'count' , SUM(sumation) as 'sum' FROM `orders` WHERE MONTH(date) = MONTH(NOW()) and waiter_id = $filter GROUP by product");
+		}
 		}
 
 		$sum = 0 ; 
@@ -108,7 +108,24 @@ body{
 			<th> المجموع </th>
 			<th>  </th>
 			<th>  </th>
-			<th> <?php echo $sum." جنيه "; ?> </th>
+			<th> <?php echo $sum." جنيه "; 
+			
+			if(isset($_POST['filterwaiter'])){
+				$filter = $_POST['key'] ; 
+				if($filter != "0"){
+					$present = "";
+					$q = mysqli_query($conn,"SELECT * FROM `present`");
+					while ($row = mysqli_fetch_array($q)) {
+						$present = $row['present'];
+					}
+					// عملية النادل الحسابية 
+					// المجموع * النسبة المئوية / 100
+					$wsum = $sum * $present / 100 ;  
+					echo " / بنسبة:".$present."%  اجمالي حساب النادل:".$wsum."جنيه" ;
+				}
+				}
+			
+			?> </th>
 		</tr>
 	</table>
 	</center>

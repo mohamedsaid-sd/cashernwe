@@ -156,7 +156,7 @@ window.onload=startclock;
 
 <div id="casherRight">
 
-<center style="background-color: #a12;color: #fff;padding: 5px;font-weight: bold;font-size: 17px;margin: 3px;">
+<center style="background-color: rgb(120,77,42);color: #fff;padding: 5px;font-weight: bold;font-size: 17px;margin: 3px;">
     تصميم سمارت ديف البرمجية @ 2023 للتواصل واتس / مكالمات [ 24995712679+ ] البريد الالكترونى sudanit2015@gmail.com
 </center>
 
@@ -173,7 +173,7 @@ window.onload=startclock;
                 echo  " التاريخ :  " .$new ;
 ?>
 <!-- *********************************Time ****************************************************-->
-	<img style="float: left;"  class="welocme" src="img/home.png" width="300" height="150">
+	<img style="float: left;"  class="welocme" src="img/logo.jpg" width="300" height="150">
 
 	<form class="welocme" style="color: #000;margin-right: 100px;width: 50%" name="clock" method="POST" action="#"> الساعة الآن :  <input type="submit" class="trans" name="face" value="" style="background-color: #eeeeee99;color: #000000aa; border:none"> </form>
 <!-- *********************************Logo ****************************************************-->
@@ -248,7 +248,7 @@ if(isset($_POST['btn_reorder'])){
 			
 		<input hidden name="q" value="'.$row2['name'].'"/>
 
-		<input id="item" type="submit" value="'.$row2['name'].'" name="addtocard">
+		<input style="background-color:rgb(120,77,42);" id="item" type="submit" value="'.$row2['name'].'" name="addtocard">
 
 		<input hidden name="name" type="text" value="'.$row2['name'].'">
 		<input  hidden name="price" style="width: 20px;text-align: center;" type="text" value="'.$row2['price'].'"></form>';
@@ -272,7 +272,7 @@ if(isset($_POST['btn_reorder'])){
 <form id="form" method="get" action="reorder.php">
 <br/><b> في حالة إرجاع الفاتورة  </b><br/>
 <input style="width: 85%;" placeholder="رقم الفاتورة" type="number" name="did" id='did'><br/>
-<input style="color: #fff;background-color: red;font-size: 20px;width: 90%;" type="submit" value="مرتجع"/>  
+<input style="color: #fff;background-color: rgb(192,31,47);font-size: 20px;width: 90%;" type="submit" value="مرتجع"/>  
 </form>
 
 	<?php
@@ -371,7 +371,7 @@ echo '">';
 	
 	echo "</b>";
 echo '	
-<button type="submit" name="order" style="background-color:#a12;color;#fff;width:90%;font-size:25px;"><font color="white"> اضافه صنف  </font> </button>	
+<button type="submit" name="order" style="background-color:rgb(244,150,28);color;#fff;width:90%;font-size:25px;"><font color="white"> اضافه صنف  </font> </button>	
 </form>';
 
 echo '<form id="form" method="post" action="">
@@ -406,7 +406,7 @@ echo '">';
 	
 	echo "</b>";
 echo '	
-<button type="submit" name="order" style="background-color:#a12;color;#fff;width:90%;font-size:25px;"><font color="white"> إضافة للفاتورة </font> </button>	
+<button type="submit" name="order" style="background-color:rgb(244,150,28);color;#fff;width:90%;font-size:25px;"><font color="white"> إضافة للفاتورة </font> </button>	
 </form>';
 
  ?>
@@ -500,7 +500,7 @@ echo '
 			<th> '.$row['qount'].' </th>
 			<th> '.$row['price'].' </th>
 			<th> '.$row['total'].' </th>
-			<th> <a href="home.php?did='.$row['id'].'" style="text-decoration:none;"><font color="red">X</font></a> </th>
+			<th> <a href="home.php?did='.$row['id'].'" style="text-decoration:none;"><font color="red" style="font-size:20px;">X</font></a> </th>
 		</tr>';
 
 		$i++;
@@ -536,12 +536,21 @@ echo '
 	?>
 
 <form id="formbuy" method="get" action="print.php?countinue=1&&orderid=<?php echo $orderid; ?>" style="background-color: #eee;padding: 5px;font-size:30px;">
-
+		 النادل : <select name="waiter" style="font-size:20px;font-weight: bold;padding:8px;border-radius:15px ;margin-left:50px;">
+		<option value="0"> الكاشير ( انا ) </option>
+		<?php
+			include('../config.php');
+			$q = mysqli_query($conn,"SELECT * FROM `waiter`");
+			while ($row = mysqli_fetch_array($q)) {
+		?>
+		<option value="<?php echo $row['id']; ; ?>"> <?php echo $row['name']; ?> </option>
+		<?php } ?> 
+	</select>
 		 خصم : <input style="width: 50px;padding: 8px;font-weight: bold;font-size: 20px;" type="number" name="dis" placeholder="0" value="0"  /> 
-		<button style="background-color: green;color: #fff;padding: 12px;"> شراء Buy  </button>
+		<button style="background-color: green;color: #fff;padding: 15px; font-size:20px;"> شراء Buy  </button>
 	
 		<a href="home.php?cancel=1&&orderid=
-	<?php echo $orderid; ?>" style="background-color: red;padding: 10px;text-decoration: none;color: #fff;border-radius: 10px;font-size: 20px;font-weight: bold;"> الغاء Cancel </button></a>
+	<?php echo $orderid; ?>" style="background-color: rgb(192,31,47);padding: 10px;text-decoration: none;color: #fff;border-radius: 10px;font-size: 20px;font-weight: bold;"> الغاء Cancel </button></a>
 
 </form>
 	
