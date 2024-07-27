@@ -44,26 +44,59 @@ if(!isset($_SESSION['sname'])){
 <!-- 	<body> -->
 	<?php 
 	include('config.php');
-
 	$orderid = 0;
 	$orderidint = 0;
 	$dis = $_GET['dis'];
 	$waiter = $_GET['waiter'];
 
 
-
-	$waiter_name = "";
+	// Get the waiter name 
+	$waiter_name = " الكاشير ";
 	$query_w = mysqli_query( $conn , "SELECT * FROM `waiter` WHERE `id` = $waiter");
 	while ($roww = mysqli_fetch_array($query_w)) {
 		$waiter_name = $roww['name'];
 	}
 
 
-	  ?>  
-	
+	// but all cart item 
+	$select_department = mysqli_query( $conn , "SELECT DISTINCT (SELECT cat from product WHERE name LIKE cart.product) as 'cat' FROM `cart`");
+	while ($department_row = mysqli_fetch_array($select_department)) {
+
+		$did = $department_row['cat'];
+
+		// Get the waiter name 
+		$department_name = "";
+		$query = mysqli_query( $conn , "SELECT * FROM `departments` WHERE `id` = $did");
+		while ($rowo = mysqli_fetch_array($query)) {
+			$department_name = $rowo['department'];
+		}
 
 
-		<?php
+
+		// Start Print 
+		echo "<center id='ppp'>";
+
+		echo "<h3>".$department_name." </h3>";
+
+		echo "
+		<table width='100%'>
+		<tbody>
+		";
+		$select_product =  mysqli_query( $conn , "SELECT * FROM `cart` WHERE product in (SELECT name FROM product WHERE cat = $did);");
+		while ($rowww = mysqli_fetch_array($select_product)) {
+			echo " 
+			<tr>
+			<td> ".$rowww['product']." </td>	
+			<td> الكمية ".$rowww['qount']." </td>
+			</tr>
+			";
+		}
+
+
+		// End Print 
+		echo "</tbody></table><br/></center>";
+		}
+
 
 		$oid = '';
 
@@ -73,13 +106,16 @@ if(!isset($_SESSION['sname'])){
 			$oidint = $order_row['order_id'];
 		}
 
+
+
+		// But 0 befor one number 
 		if($oid < 10){
 			$oid = "0".$oid;
 		}
 
 		echo '<center id="ppp">
 		<img src="img/logo.jpg" width="150"/>
-		<h3>  رويا كافى ROYA <br/><hr/>';
+		<hr/>';
 
 			// echo "</h3><img src='barcode.php?codetype=Code39&&size=20&text=".$oid."'><br/>
 			// فاتورة رقم : ".$oid." <br/> ";
@@ -102,7 +138,7 @@ if(!isset($_SESSION['sname'])){
 
 		$q = mysqli_query($conn,"SELECT * FROM `cart`");
 		$sum = 0 ; 
-				$sumall = 0 ; 
+		$sumall = 0 ; 
 
 		while ($row = mysqli_fetch_array($q)) {
 		$qo = mysqli_query($conn,"SELECT * FROM `orders`");

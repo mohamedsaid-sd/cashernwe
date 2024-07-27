@@ -23,7 +23,7 @@ if(isset($_POST['login']))
 <html>
 <head>
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
-	<title> إدارة الكافتريا </title>
+	<title> إدارة المطعم </title>
 </head>
 <body>
 	<style type="text/css">

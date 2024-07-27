@@ -5,14 +5,17 @@ $sid = $_SESSION['sid'] ;
 if(!isset($_SESSION['sid'])){
 	echo '<meta http-equiv="refresh" content="0;url=index.php"';
 }
+
 if(isset($_POST['aproduct'])){
  $barcode = $_POST['barcode'];
- $name = $_POST['name'] ;
- $price = $_POST['price'] ;
+ $name    = $_POST['name'] ;
+ $price   = $_POST['price'] ;
+ $cat     = $_POST['cat'];
 
 if($name != "")
 {
-$aq = mysqli_query($conn , "INSERT INTO `product` (`id` , `barcode` , `name`, `price`) VALUES (NULL, '$barcode' , '$name', '$price');");
+$aq = mysqli_query($conn , "INSERT INTO `product` (`id`, `barcode`, `name`, `price`, `cat`) VALUES (NULL, '$barcode', '$name', '$price', '$cat');");
+
 if($aq){
  	echo "<div id='alert_good'>تمت اللإضافة بنجاح</div>";
 }else{
@@ -29,8 +32,9 @@ if(isset($_POST['eproduct'])){
 	$id = $_POST['id'];
 	$name = $_POST['name'];
 	$price = $_POST['price'];
+	$cat    = $_POST['cat'];
 
-	$aq = mysqli_query($conn , "UPDATE `product` SET `name` = '$name', `price` = '$price' WHERE `product`.`id` = $id;");
+	$aq = mysqli_query($conn , "UPDATE `product` SET `name` = '$name', `price` = '$price' , `cat` = '$cat' WHERE `product`.`id` = $id;");
 
 	if($aq){
  	echo "<div id='alert_good'>تمت التعديل بنجاح</div>";
@@ -177,6 +181,7 @@ $('#example').DataTable({
 				<th style="text-align: center;"> الباركود </th>
 				<th style="text-align: center;"> اسم المنتج </th>
 				<th style="text-align: center;"> سعر المنتج </th>
+				<th style="text-align: center;"> القسم </th>
 				<th style="text-align: center;"> الاجراء </th>
 				<th></th>
 			</tr>
@@ -189,11 +194,22 @@ $('#example').DataTable({
 		
 			$alert = '" هل تريد حذف المنتج  ? "';
 
+			// GET the name of the department ****************************** 
+			// The department id : 
+			$department_id = $row['cat'];
+			$variable = "" ;
+			$select  = mysqli_query($conn,"SELECT * FROM `departments`  WHERE `id` = '$department_id' ");
+			while ($row2 = mysqli_fetch_array($select)) {
+				$variable = $row2['department'];
+			}
+			//***************************************************************
+
 			echo "<tr>
 				<th style='text-align: center;'> ".$i." </th>
 				<th style='text-align: center;'> ".$row['barcode']." </th>
 				<th style='text-align: center;'> ".$row['name']." </th>
 				<th style='text-align: center;'> ".$row['price']." </th>
+				<th style='text-align: center;'> ".$variable." </th>
 				<th style='text-align: center;'> <a href='add_product.php?edid=".$row['id']."'> <button> تعديل </button></a> <a href='add_product.php?did=".$row['id']."'><button style='background-color:rgb(192,31,47);color:#fff;font-weight:normal;' onclick='return confirm(".$alert.")'> حذف </button></a> </th>
 				<td> </td>
 			</tr>
@@ -219,12 +235,18 @@ $('#example').DataTable({
 		<form action="add_product.php" method="post">
 		<h2><b> تعديل منتج </b></h2>
 		<input hidden type="text" placeholder="إسم المنمتج" name="id" value="<?php echo $row['id'] ?>" />
-		<input type="text" placeholder="إسم المنمتج" name="name" value="<?php echo $row['name'] ?>" /><br/><br/>
-		<input type="number" placeholder="سعر المنتج" name="price" value="<?php echo $row['price'] ?>" /><br/><br/>
-	
-		<br/>
-
-
+		<input type="text" placeholder="إسم المنمتج" name="name" value="<?php echo $row['name'] ?>" /><br/>
+		<input type="number" placeholder="سعر المنتج" name="price" value="<?php echo $row['price'] ?>" /><br/>
+		القسم : 
+		<select name="cat" style="width: 70%;padding: 5px;border-radius: 10px;margin-top: 10px;" required>
+			<?php 
+			$select = mysqli_query($conn,"SELECT * FROM `departments`");
+			while ($row = mysqli_fetch_array($select)) {?>
+				<option value="<?php echo $row['id']; ?>"> <?php echo $row['department']; ?> </option>		
+			<?php } ?>
+		?>
+		</select>
+		<br/><br/>
 		<input style="background-color: green;color: #fff;border: none;padding: 10px;" type="submit" name="eproduct" value="تعديل" /><br/><br/>
 		</form>
 
@@ -235,7 +257,18 @@ $('#example').DataTable({
 		<span style="color:#bbb;font-weight: bold;font-size: 15px;">* امسح رمز المنتج </span><br/>
 		<input style="width: 100%" type="number" name="barcode" placeholder="الباركود"/><br/>
 		<input style="width: 100%" type="text" placeholder="إسم المنمتج" name="name"/><br/>
-		<input style="width: 100%" type="number" step="0.01" placeholder="سعر المنتج" name="price"/><br/><br/>
+		<input style="width: 100%" type="number" step="0.01" placeholder="سعر المنتج" name="price"/><br/>
+		القسم : 
+		<select name="cat" style="width: 70%;padding: 5px;border-radius: 10px;margin-top: 10px;" required>
+		<option value=""> -- اختيار القسم -- </option>
+			<?php 
+			$select = mysqli_query($conn,"SELECT * FROM `departments`");
+			while ($row = mysqli_fetch_array($select)) {?>
+				<option value="<?php echo $row['id']; ?>"> <?php echo $row['department']; ?> </option>		
+			<?php } ?>
+		?>
+		</select>
+		<br/><br/>
 		<input style="background-color: green;color: #fff;border: none;padding: 10px;" type="submit" name="aproduct" value="إضافة" /><br/>
 		</form>
 		<?php } ?>

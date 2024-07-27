@@ -5,15 +5,13 @@ $sid = $_SESSION['sid'] ;
 if(!isset($_SESSION['sid'])){
 	echo '<meta http-equiv="refresh" content="0;url=index.php"';
 }
-if(isset($_POST['aproduct'])){
+if(isset($_POST['insert'])){
  $name = $_POST['name'] ;
- $username = $_POST['username'] ;
- $pass = $_POST['pass'] ;
-
-if($name != "" && $username != "" && $pass != "")
+//  $phone = $_POST['phone'] ;
+if($name != "")
 {
-$aq = mysqli_query($conn , "INSERT INTO `users` (`id`, `name`, `username`, `pass`) VALUES (NULL, '$name', '$username', '$pass');");
-if($aq){
+$insert_quesry = mysqli_query($conn , "INSERT INTO `departments` (`id`, `department`) VALUES (NULL, '$name');");
+if($insert_quesry){
  	echo "<div id='alert_good'>تمت اللإضافة بنجاح</div>";
 }else{
 	echo "<div id='alert_pad'>خطأ في هملية اللإضافة</div>";
@@ -24,28 +22,25 @@ if($aq){
 }
 
 // Edite the user button click 
-if(isset($_POST['eproduct'])){
-
+if(isset($_POST['edite'])){
 	$id = $_POST['id'];
 	$name = $_POST['name'];
-	$username = $_POST['username'];
-	$pass = $_POST['pass'];
-
-	$aq = mysqli_query($conn , "UPDATE `users` SET `name` = '$name', `username` = '$username', `pass` = '$pass' WHERE `users`.`id` = $id;");
-	if($aq){
+	$edite_query = "UPDATE `departments` SET `department` = '$name' WHERE `departments`.`id` = $id;";
+	$result = mysqli_query($conn,$edite_query);
+	if($result){
  	echo "<div id='alert_good'>تمت التعديل بنجاح</div>";
 	}else{
 	echo "<div id='alert_pad'>خطأ في عملية التعديل</div>";
 	}
 }
 
-// Delete the User
+// Delete the department
 if(isset($_GET['del'])){
 	$id = $_GET['del'];
-	$delete_query = "DELETE FROM `users` WHERE `users`.`id` = $id";
+	$delete_query = "DELETE FROM `departments` WHERE `departments`.`id` = $id";
 	$result = mysqli_query($conn , $delete_query);
 	if($result){
-		echo "<div id='alert_good'>تم الحذف بنجاح</div>";
+		echo "<div id='alert_good'>تمت الحذف بنجاح</div>";
 	}else{
 		echo "<div id='alert_pad'>خطأ في عملية الحذف</div>";
 	}
@@ -55,7 +50,7 @@ if(isset($_GET['del'])){
 <!DOCTYPE html>
 <html dir="rtl">
 <head>
-	<title> إضافة مستخدم </title>
+	<title> الاقسام </title>
 
 
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
@@ -167,30 +162,24 @@ $('#example').DataTable({
 		<br/>
 
 		<center id="sectionLeft">
-		<h2> المستخدمين </h2>
+		<h2> اقسام المطعم  </h2>
 
 		<table id="example" class="display" style="background-color: #fff;box-shadow: 2px 2px 5px black;border-radius: 0px;color: #000;" width="100%" >
 			<tr>
 				<th style="font-size: 20px;text-align: center;"> #الرقم </th>
-				<th style="font-size: 20px;text-align: center;"> الإسم </th>
-				<th style="font-size: 20px;text-align: center;"> إسم المستخدم </th>
-				<th style="font-size: 20px;text-align: center;"> الكلمة المرور</th>
+				<th style="font-size: 20px;text-align: center;"> القسم </th>
 				<th style="font-size: 20px;text-align: center;"> الاجراء </th>
 			</tr>
 		<?php
 
-		$q = mysqli_query($conn,"SELECT * FROM `users`");
+		$q = mysqli_query($conn,"SELECT * FROM `departments`");
 		$i = 1 ;
 		while ($row = mysqli_fetch_array($q)) {
-
-			$alert = '" هل تريد حذف المستخدم  ? "';
-
+			$alert = '" هل تريد حذف القسم  ? "';
 			echo "<tr>
-				<th style='text-align: center;'> ".$i." </th>
-				<th style='text-align: center;'> ".$row['name']."</th>
-				<th style='text-align: center;'> ".$row['username']." </th>
-				<th style='text-align: center;'> ".$row['pass']."</th>
-				<th style='text-align: center;'><a href='add_user.php?edid=".$row['id']."''> <button> تعديل </button></a><a href='add_user.php?del=".$row['id']."'><button onclick='return confirm(".$alert.")' style='background-color:rgb(192,31,47);font-weight: normal;color:#fff;'> حذف </button></a>  </th>
+				<th style='text-align: center;'> ".$i."</th>
+				<th style='text-align: center;'> ".$row['department']."</th>
+				<th style='text-align: center;'><a href='add_cat.php?edid=".$row['id']."'> <button> تعديل </button></a> <a href='add_cat.php?del=".$row['id']."'><button onclick='return confirm(".$alert.")' style='background-color:rgb(192,31,47);font-weight: normal;color:#fff;'> حذف </button></a> </th>
 			</tr>
 			";
 			$i++;
@@ -201,9 +190,9 @@ $('#example').DataTable({
 
 	<center id="sectionRight">
 
-		<h2> إضافة مستخدم جديد </h2>
+		<h2>  إضافة قسم جديد  </h2>
 
-		<a href="home.php"><img src="../img/fail.png" width="30" height="20"><input style="color: #fff;background-color:  rgb(192,31,47);" type="submit" value="رجوع" /></a>
+		<a href="home.php"><img src="../img/fail.png" width="30" height="20"><input style="color: #fff;background-color: rgb(192,31,47);" type="submit" value="رجوع" /></a>
 
 
 		<?php 
@@ -211,25 +200,21 @@ $('#example').DataTable({
 		if(isset($_GET['edid']))
 		{
 		$id = $_GET['edid'] ; 
-		$q = mysqli_query($conn,"SELECT * FROM `users` where id = $id ");
+		$q = mysqli_query($conn,"SELECT * FROM `departments` where id = $id ");
 		while ($row = mysqli_fetch_array($q)) {
 		 ?>
-		<form action="add_user.php" method="post">
-		<h2 style="color: #fff;"> تعديل بيانات مستخدم </h2>
+		<form action="add_cat.php" method="post">
+		<h2 style="color: #000;"> تعديل قسم  </h2>
 		<input hidden type="text" placeholder="أدخل إسم التصنيف" name="id" value="<?php echo $row['id']; ?>" />
-		<input type="text" placeholder=" الأسم " name="name" value="<?php echo $row['name']; ?>"/><br/>
-		<input type="text" placeholder="إسم المستخدم" name="username" value="<?php echo $row['username']; ?>" /><br/>
-		<input type="text" placeholder="كلمة المرور" name="pass" value="<?php echo $row['pass']; ?>"/><br/>
-		<input style="background-color: green;color: #fff;border: none;padding: 10px;" type="submit" name="eproduct" value="نعديل" /><br/><br/>
+		<input type="text" placeholder=" الأسم " name="name" value="<?php echo $row['department']; ?>"/><br/>
+		<input style="background-color: green;color: #fff;border: none;padding: 10px;" type="submit" name="edite" value="تعديل" /><br/><br/>
 		</form>
 		<?php }} else { ?>
-		<form action="" method="post">
+		<form action="add_cat.php" method="post">
 		
 		<br/>
-		<input type="text" placeholder=" الأسم " name="name"/><br/>
-		<input type="text" placeholder="إسم المستخدم" name="username"/><br/>
-		<input type="text" placeholder="كلمة المرور" name="pass"/><br/>
-		<input style="background-color: green;color: #fff;border: none;padding: 10px;" type="submit" name="aproduct" value="إضافة" /><br/>
+		<input type="text" placeholder=" الإسم " name="name"/><br/>
+		<input style="background-color: green;color: #fff;border: none;padding: 10px;" type="submit" name="insert" value="إضافة" /><br/>
 		</form>
 
 		<?php } ?>

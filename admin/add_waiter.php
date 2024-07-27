@@ -37,6 +37,18 @@ if(isset($_POST['eproduct'])){
 	}
 }
 
+// Delete the Waiter
+if(isset($_GET['del'])){
+	$id = $_GET['del'];
+	$delete_query = "DELETE FROM `waiter` WHERE `waiter`.`id` = $id";
+	$result = mysqli_query($conn , $delete_query);
+	if($result){
+		echo "<div id='alert_good'>تم الحذف بنجاح</div>";
+	}else{
+		echo "<div id='alert_pad'>خطأ في عملية الحذف</div>";
+	}
+}
+
 ?>
 <!DOCTYPE html>
 <html dir="rtl">
@@ -167,14 +179,13 @@ $('#example').DataTable({
 		$q = mysqli_query($conn,"SELECT * FROM `waiter`");
 		$i = 1 ;
 		while ($row = mysqli_fetch_array($q)) {
-
-			echo '<tr>
-				<th style="text-align: center;"> '.$i.' </th>
-				<th style="text-align: center;"> '.$row['name'].' </th>
-				<th style="text-align: center;"> '.$row['phone'].' </th>
-				<th style="text-align: center;"><a href="add_waiter.php?edid='.$row['id'].'"> <button> تعديل </button></a> <button style="background-color:rgb(192,31,47);font-weight: normal;color:#fff;"> حذف </button> </th>
-			</tr>
-			';
+			$alert = '" هل تريد حذف القسم  ? "';
+			echo "<tr>
+				<th style='text-align: center;'> ".$i." </th>
+				<th style='text-align: center;'> ".$row['name']."</th>
+				<th style='text-align: center;'> ".$row['phone']."</th>
+				<th style='text-align: center;'><a href='add_waiter.php?edid=".$row['id']."'> <button> تعديل </button></a> <a href='add_cat.php?del=".$row['id']."'><button onclick='return confirm(".$alert.")' style='background-color:rgb(192,31,47);font-weight: normal;color:#fff;'> حذف </button></a> </th>
+			</tr>";
 			$i++;
 		}
 		?>

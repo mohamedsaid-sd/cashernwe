@@ -154,6 +154,7 @@ window.onload=startclock;
 		font-size: 18px;
 		padding: 10px;
 		box-shadow: 2px 2px 2px black;
+		min-width: 100px;
 	}
 	input[type=number]{
 		padding: 10px;
@@ -176,7 +177,7 @@ window.onload=startclock;
 
 	<center style="clear: both;">
 
-	<div id="all" style="text-align: right; float: left;width:50%;float: right;margin-right: 20px;" >
+	<div id="all" style="text-align: right; float: left;width:50%;float: right;margin-right: 20px;display: none;" >
 		
 			<a href="home.php?exit=0"><img src="img/fail.png" width="30" height="20"><input style="color: #fff;background-color: red;" type="submit" value="خروج" /></a>
 		
@@ -288,7 +289,7 @@ if ($pressed == 'C') {
     $display .= eval("return $stored;");
 } 
 
-echo "<div id='calculator' style='text-align:center;width:40%;float:right;border-radius:10px;background-color:#eee;padding:10px;'>";
+echo "<div id='calculator' style='text-align:center;width:40%;float:right;border-radius:10px;background-color:#eee;padding:10px;display:none;'>";
 
 echo "<form dir='ltr' action='' method='POST'";
 
@@ -343,7 +344,7 @@ echo "'>";
     echo "<input type='hidden' name='stored' value='$display'>";
 echo "</form>";
 
-echo '<form method="post" action="" style="margin:0px;padding:0px;">
+echo '<form method="post" action="" style="margin:0px;padding:0px;display:none">
 <input hidden  style="width:100px;" type="text" name="name" value="';
 if(isset($_POST['q']) || isset($_POST['pressed'])) {
 	echo $_POST['name'];
@@ -385,7 +386,7 @@ echo '
 
 <?php 
 
-echo '<form method="post" action="">
+echo '<form method="post" action="" style="display:none">
 <input style="width:100px;font-size:20px;" placeholder="اسم المنتج" name="name" type="text" value="" />
 
 <input  style="width:70px;font-size:25px;" type="number" placeholder="السعر" name="price" value=""/>;
@@ -410,7 +411,10 @@ echo '
 
 
  ?>
-<div id="pr" style="background-color: #fff;box-shadow: 2px 2px 5px black;padding: 5px;border-radius: 0px;color: #000;width:40%;float: right;padding: 10px;margin: 5px;margin-top: 50px;">
+
+ 
+
+<div id="pr" style="background-color: #fff;box-shadow: 2px 2px 5px black;padding: 5px;border-radius: 0px;color: #000;width:40%;padding: 10px;margin: 5px;margin-top: 50px;align-self: center;align-items: center;align-content: center;">
 
 	<!-- <center><h2> إجمالي اليوم :  <?php
 
@@ -513,15 +517,20 @@ echo '
 
 
 	<a href="printbillno.php?countinue=1&&orderid=
-	<?php echo $orderid; ?>"><button style="background-color: green;color: #fff;padding: 15px;"> طباعة Print </button></a>
+	<?php echo $orderid; ?>"><img src="img/print.png" width="30" height="20"><button style="background-color: rgb(120,77,42);color: #fff;padding: 10px;"> طباعة Print </button></a>
 
 	
 		<a href="reorder.php?cancel=1&&orderid=
-	<?php echo $orderid; ?>&&did=<?php echo $_GET['did'] ?>"><button style="background-color: red;color: #fff;padding: 15px;"> ارجاع </button></a>
+	<?php echo $orderid; ?>&&did=<?php echo $_GET['did'] ?>"><img src="img/pass.png" width="30" height="20"><button style="background-color: green;color: #fff;padding: 15px;"> ارجاع </button></a>
 	<?php }else{} ?>
+
+<a href="home.php"><img src="img/fail.png" width="30" height="20"><button style="background-color: red;color: #fff;padding: 10px;"> رجوع </button></a>
+	
+
 	</center>
 	
 </div>
+
 
 </center>
 

@@ -1,13 +1,8 @@
-
-
 <?php 
-
 session_start();
 if(!isset($_SESSION['sname'])){
 	echo '<meta http-equiv="refresh" content="0;url=index.php"';
-	
 }
-
 ?>
 <!DOCTYPE html>
 <html dir="rtl">
@@ -53,14 +48,58 @@ if(!isset($_SESSION['sname'])){
 
 		$oid = $_GET['orderid'];
 
+		// but all cart item 
+	$select_department = mysqli_query( $conn , "SELECT DISTINCT (SELECT cat from product WHERE name LIKE orders.product ) as 'cat' FROM `orders` WHERE orders.order_id = '$oid'");
+	while ($department_row = mysqli_fetch_array($select_department)) {
+
+		$did = $department_row['cat'];
+
+		// Get the waiter name 
+		$department_name = "";
+		$query = mysqli_query( $conn , "SELECT * FROM `departments` WHERE `id` = $did");
+		while ($rowo = mysqli_fetch_array($query)) {
+			$department_name = $rowo['department'];
+		}
+
+
+
+		// Start Print 
+		echo "<center id='ppp'>";
+
+		echo "<h3>".$department_name." </h3>";
+
+		echo "
+		<table width='100%'>
+		<tbody>
+		";
+		$select_product =  mysqli_query( $conn , "SELECT * FROM `orders` WHERE product in (SELECT name FROM product WHERE cat = $did and orders.order_id = '$oid');");
+		while ($rowww = mysqli_fetch_array($select_product)) {
+			echo " 
+			<tr>
+			<td> ".$rowww['product']." </td>	
+			<td> الكمية ".$rowww['qount']." </td>
+			</tr>
+			";
+		}
+
+
+		// End Print 
+		echo "</tbody></table><br/></center>";
+		}
+
+		
+
 		echo '
-			<center id="ppp"> <h3>#'.$oid.' محل عبد الله عبيد السبيعي للدواجن <br/><hr/>
-			</h3>الرقم الضريبي : 1234567890 <br/><hr/>
-			<h4 style="border:solid 2px black ;"> فاتورة ضريبة مبسطة : مبيعات  </h4>
+			<center id="ppp"> 
+			<img src="img/logo.jpg" width="150"/>
+			<hr/>
+			</h3>فاتورة رقم : '.$oid.' 
+			<br/><hr/>
+			<h4 style="border:solid 2px black ;"> فاتورة مبيعات مبسطة </h4>
 			';
 
 			echo "</h3> التاريخ :  ".date("Y/m/d h:i:s");
-		echo '<br/>جوال : 0569182212 س ت 2251497722 <hr/>
+		echo '<br/>جوال : 249909642222 <hr/>
 		<table width="90%" style="color: #000;">
 		<tr>
 			<th> المنتج </th>
@@ -97,6 +136,15 @@ if(!isset($_SESSION['sname'])){
 	
 
 		$orderid = $orderidint ;
+
+			// Get the waiter name 
+	$waiter_id   = $row['waiter_id'];
+	$waiter_name = " الكاشير ";
+	$query_w = mysqli_query( $conn , "SELECT * FROM `waiter` WHERE `id` = $waiter_id ");
+	while ($roww = mysqli_fetch_array($query_w)) {
+		$waiter_name = $roww['name'];
+	}
+
 			
 			echo '
 			<td style="text-align:center;"> '.$row['product'].' </td>
@@ -106,27 +154,6 @@ if(!isset($_SESSION['sname'])){
 			</tr>
 		';
 
-
-			////////////////////////new ffffffffffffaaaaaaaaaatttttttttttoooorrrrrrra
-
-		// 		echo '
-		// 	<center id="ppp"><h3> البيت السوداني :#'.$orderid;
-		// 	echo " إستلام <br/> التاريخ :  ".date("Y/m/d h:i:s");
-		// 	echo '</h3><hr/><table width="90%" style="color: #000;">
-		// <tr>
-		// 	<th> المنتج </th>
-		// 	<th> الكمية </th>
-		// 	<th> السعر </th>
-		// 	<th> الاجمالي </th>
-		// </tr><tr>
-		// 	<td style="text-align:center;"> '.$row['product'].' </td>
-		// 	<td style="text-align:center;"> '.$row['qount'].' </td>
-		// 	<td style="text-align:center;"> '.$row['price'].'  </td>
-		// 	<td style="text-align:center;"> '.$row['total'].'  </td>
-		// </tr></table><table width="90%" style="color: #000;"><tr><th> </th>
-		// 	<th>  </th>
-		// 	<th>  </th>
-		// 	<th>    </th></tr></table><hr/></center><div class="p"></div>';
 
 		}
 // $sumall = $sum - $discount;
@@ -155,13 +182,15 @@ if(!isset($_SESSION['sname'])){
 		<td style="text-align:center;"> '.$sum.'  </td> 
 		</tr>
 		<tr>
-		<td>
-		<img src="img/qr.jpg" style="width:100%;hight:100px;" />
-
+		<td colspan="3">
+		<br/><br/>
+		<center>
+		النادل : '.$waiter_name.'
+		</center>
 		<hr/>
  
 		<center>
-			<b>... شكرا لزيارتكم ...</b>
+			<b>.... شكرا لزيارتكم ....</b>
 		</center>
 
 		</td>

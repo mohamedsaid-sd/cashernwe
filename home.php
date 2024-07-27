@@ -163,7 +163,7 @@ window.onload=startclock;
 <!-- *********************************Exit ****************************************************-->
 	<a href="home.php?exit=0" style="float: right;"><img src="img/fail.png" width="30" height="20"><input style="color: #fff;background-color: red;font-size: 15px;" type="submit" value="خروج" /></a>
 
-
+	<img style="float: left;"  class="welocme" src="img/logo.jpg" width="300" height="150">
 <br/>
 <!-- *********************************Date ****************************************************-->
 <div class="welocme" style="color: #000;">
@@ -173,7 +173,7 @@ window.onload=startclock;
                 echo  " التاريخ :  " .$new ;
 ?>
 <!-- *********************************Time ****************************************************-->
-	<img style="float: left;"  class="welocme" src="img/logo.jpg" width="300" height="150">
+
 
 	<form class="welocme" style="color: #000;margin-right: 100px;width: 50%" name="clock" method="POST" action="#"> الساعة الآن :  <input type="submit" class="trans" name="face" value="" style="background-color: #eeeeee99;color: #000000aa; border:none"> </form>
 <!-- *********************************Logo ****************************************************-->
@@ -183,12 +183,8 @@ window.onload=startclock;
 
 
 <div id="all" style="text-align: right; float: left;" >
-			
-
-		
-
-		<?php
-
+<?php
+// When clik 
 if(isset($_POST['btn_reorder'])){
 	echo '<div id="pr" style="background-color: #fff;box-shadow: 2px 2px 5px black;padding: 5px;border-radius: 0px;color: #000;;padding: 10px;margin: 5px;margin-top: 50px;">';
 	echo "<div style='color:#000;'>";
@@ -225,26 +221,41 @@ if(isset($_POST['btn_reorder'])){
 	echo "</table></div></div>";
 	}
 	?>
-	<!-- <h2> الكاشير </h2> -->
-
-
-<!-- 	<form style="display: inline;" action="home.php" method="post"><input type="number" name="bill_no" placeholder="أدخل رقم الفاتورة">
-	<input style="background-color: red;color: #fff;border: 0px solid red;padding: 8px;" type="submit" value="مرتجع" name="btn_reorder" />
-	<input type="number"  id="dis" name="dis" placeholder="ادخل الخصم">
-
-</form> -->
 
 
 	<br/>
 	<?php
 	include('config.php');
-	
-	
-	
-			$q2 = mysqli_query($conn,"SELECT * FROM `product` ");
-			while ($row2 = mysqli_fetch_array($q2)) {
-			$pid=$row2['id'];
-			echo '<form style="display:inline;" action="home.php" method="post">
+
+// Display The resturant departments 
+$select_departments = mysqli_query($conn,"SELECT * FROM `departments`");
+		echo " <span style='font-size:20px;color:black;'> الأقسام :  </span> <a style='margin-right:10px;font-size:20px;font-weight:bold;color:brown;text-decoration:none' href='home.php'> الكل </a>";
+while ($departments_row = mysqli_fetch_array($select_departments)) {
+	$department_id = $departments_row['id'];
+	echo "<a style='margin-right:10px;font-size:20px;font-weight:bold;color:brown;text-decoration:none' href='home.php?filter=".$department_id."'> ".$departments_row['department']." </a>";
+	//echo "<h3 style='color:brown;padding:5px;margin-bottom:0px;'>".$departments_row['department']."</h3>";
+}
+
+
+		echo "<br/><br/><hr style='background-color:rgb(120,77,42);height:20px;display:width:100%;'/>";
+		
+		if(isset($_GET['filter'])){
+			$id = $_GET['filter'];
+			$q2 = mysqli_query($conn,"SELECT * FROM `product` where cat = $id");
+		}else{
+			$q2 = mysqli_query($conn,"SELECT * FROM `product`");
+		}
+
+		$action = "";
+		if(isset($_GET['filter']))
+			$action = "home.php?filter=".$_GET['filter'];
+		else
+			$action = "home.php";
+
+
+		while ($row2 = mysqli_fetch_array($q2)) {
+		$pid=$row2['id'];
+		echo '<form style="display:inline;" action="'.$action.'" method="post">
 			
 		<input hidden name="q" value="'.$row2['name'].'"/>
 
@@ -254,6 +265,8 @@ if(isset($_POST['btn_reorder'])){
 		<input  hidden name="price" style="width: 20px;text-align: center;" type="text" value="'.$row2['price'].'"></form>';
 		
 		}
+
+
 
 			echo "";
 		
