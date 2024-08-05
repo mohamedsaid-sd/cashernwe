@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 if(!isset($_SESSION['sname'])){
 	echo '<meta http-equiv="refresh" content="0;url=index.php"';
@@ -37,20 +37,25 @@ if(!isset($_SESSION['sname'])){
 		font-size: 23px;
 	}
 	th{
-		font-size: 20px;
+		font-size: 15px;
+	}
+	td{
+		font-size: 15px;
 	}
 </style>
 <body onload="self.print();">
 <!-- 	<body> -->
-	<?php 
+	<?php
 	include('config.php');
 	$orderid = 0;
 	$orderidint = 0;
 	$dis = $_GET['dis'];
 	$waiter = $_GET['waiter'];
 
+		$today = date('Y-m-d');
 
-	// Get the waiter name 
+
+	// Get the waiter name
 	$waiter_name = " الكاشير ";
 	$query_w = mysqli_query( $conn , "SELECT * FROM `waiter` WHERE `id` = $waiter");
 	while ($roww = mysqli_fetch_array($query_w)) {
@@ -58,13 +63,13 @@ if(!isset($_SESSION['sname'])){
 	}
 
 
-	// but all cart item 
+	// but all cart item
 	$select_department = mysqli_query( $conn , "SELECT DISTINCT (SELECT cat from product WHERE name LIKE cart.product) as 'cat' FROM `cart`");
 	while ($department_row = mysqli_fetch_array($select_department)) {
 
 		$did = $department_row['cat'];
 
-		// Get the waiter name 
+		// Get the waiter name
 		$department_name = "";
 		$query = mysqli_query( $conn , "SELECT * FROM `departments` WHERE `id` = $did");
 		while ($rowo = mysqli_fetch_array($query)) {
@@ -73,7 +78,7 @@ if(!isset($_SESSION['sname'])){
 
 
 
-		// Start Print 
+		// Start Print
 		echo "<center id='ppp'>";
 
 		echo "<h3>".$department_name." </h3>";
@@ -84,33 +89,35 @@ if(!isset($_SESSION['sname'])){
 		";
 		$select_product =  mysqli_query( $conn , "SELECT * FROM `cart` WHERE product in (SELECT name FROM product WHERE cat = $did);");
 		while ($rowww = mysqli_fetch_array($select_product)) {
-			echo " 
+			echo "
 			<tr>
-			<td> ".$rowww['product']." </td>	
+			<td> ".$rowww['product']." </td>
 			<td> الكمية ".$rowww['qount']." </td>
 			</tr>
 			";
 		}
 
 
-		// End Print 
+		// End Print
 		echo "</tbody></table><br/></center>";
 		}
 
 
-		$oid = '';
+		$oid = 0;
 
-		$query= mysqli_query($conn,"SELECT * FROM `orders`");
+		$query= mysqli_query($conn,"SELECT * FROM `orders`  where date like '$today%' ");
 		while ($order_row = mysqli_fetch_array($query)) {
 			$oid = $order_row['order_id'] + 1;
 			$oidint = $order_row['order_id'];
 		}
 
-
-
-		// But 0 befor one number 
+		// But 0 befor one number
 		if($oid < 10){
 			$oid = "0".$oid;
+		}
+
+		if($oid == 0){
+			$oid = "01";
 		}
 
 		echo '<center id="ppp">
@@ -119,13 +126,13 @@ if(!isset($_SESSION['sname'])){
 
 			// echo "</h3><img src='barcode.php?codetype=Code39&&size=20&text=".$oid."'><br/>
 			// فاتورة رقم : ".$oid." <br/> ";
-			echo "</h3>فاتورة رقم : ".$oid." 
+			echo "</h3>فاتورة رقم : ".$oid."
 			<br/>";
 			echo '<hr/>
 			<h4 style="border:solid 2px black ;"> فاتورة مبيعات مبسطة  </h4>
 			';
 		//echo "<img style='height:10px;' id='qr' alt='testing' src='barcode.php?codetype=Code39&size=40&text=".$oid."&print=true'/>";
-		
+
 			echo " التاريخ :  ".date("Y/m/d h:i:s");
 		echo '<br/>جوال : 249909642222 <hr/>
 		<table width="90%" style="color: #000;">
@@ -137,33 +144,33 @@ if(!isset($_SESSION['sname'])){
 		</tr><tr>';
 
 		$q = mysqli_query($conn,"SELECT * FROM `cart`");
-		$sum = 0 ; 
-		$sumall = 0 ; 
-
+		$sum = 0 ;
+		$sumall = 0 ;
+	
 		while ($row = mysqli_fetch_array($q)) {
-		$qo = mysqli_query($conn,"SELECT * FROM `orders`");
+		$qo = mysqli_query($conn,"SELECT * FROM `orders` where date like '$today%' ");
 		while ($rowo = mysqli_fetch_array($qo)) {
 			$orderid = $rowo['order_id'];
 			$orderidint = $rowo['order_id'];
 		}
-		if(isset($orderid)){
-			$orderid ++ ; 
+		if($orderid != 0){
+			$orderid ++ ;
 			$orderidint = $orderid ;
 			$orderid = "#".$orderid;
 			//echo $orderid ;
 		}else{
-			$orderid = "#1" ; 
+			$orderid = "#1" ;
 			$orderidint = "1" ;
 			//echo $orderid ;
 		}
 
 
 		$sum = $sum + $row['total'];
-	
-	
+
+
 
 		$orderid = $orderidint ;
-			
+
 			echo '
 			<td style="text-align:center;"> '.$row['product'].' </td>
 			<td style="text-align:center;"> '.$row['qount'].' </td>
@@ -196,13 +203,13 @@ if(!isset($_SESSION['sname'])){
 
 		}
 
-		$sumafterdiscount = $sum - $dis ; 
+		$sumafterdiscount = $sum - $dis ;
 
 		$dis = $sum - $sumafterdiscount;
 
 		echo'
 		</table>
-		
+
 		<hr/>
 
 		<table width="90%">
@@ -210,19 +217,19 @@ if(!isset($_SESSION['sname'])){
 		<td style="text-align:center;"> المجموع :  </td>
 		<td>  </td>
 		<td>  </td>
-		<td style="text-align:center;"> '.$sum.' </td> 
+		<td style="text-align:center;"> '.$sum.' </td>
 		</tr>
 		<tr>
 		<td style="text-align:center;"> الخصم :  </td>
 		<td>  </td>
 		<td>  </td>
-		<td style="text-align:center;">  '.$dis.'  </td> 
+		<td style="text-align:center;">  '.$dis.'  </td>
 		</tr>
 		<tr>
 		<td style="text-align:center;">المجموع بعد الخصم :  </td>
 		<td>  </td>
 		<td>  </td>
-		<td style="text-align:center;"> '.$sumafterdiscount.'  </td> 
+		<td style="text-align:center;"> '.$sumafterdiscount.'  </td>
 		</tr>
 		<tr>
 		<td colspan="3">
@@ -231,7 +238,7 @@ if(!isset($_SESSION['sname'])){
 		النادل : '.$waiter_name.'
 		</center>
 		<hr/>
- 
+
 		<center>
 			<b>.... شكرا لزيارتكم ....</b>
 		</center>
@@ -242,7 +249,7 @@ if(!isset($_SESSION['sname'])){
 			<th>  </th>
 			<th>  </th>
 			<th>    </th></tr></table><hr/></center>
-			
+
 			<div class="p"></div>';
 
 		?>
@@ -258,8 +265,8 @@ if(event){
 }
 
 </script>
-<?php 
-$sid = $_SESSION['sid'] ; 
+<?php
+$sid = $_SESSION['sid'] ;
 include('config.php');
 mysqli_query( $conn , "INSERT INTO orders ( order_id , product , qount , price , sumation , total , user_id , 	waiter_id , date ) SELECT '$orderid' , product , qount , price , total , '$sumafterdiscount' , $sid , $waiter ,CURRENT_TIMESTAMP FROM cart");
 mysqli_query( $conn , "TRUNCATE cart");

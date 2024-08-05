@@ -41,8 +41,8 @@ if(!isset($_SESSION['sid'])){
 				<th style="border-bottom: solid 1px  black;"> الاجمالي </th>
 			</tr>
 		<?php
-			
-			$q = mysqli_query($conn,"SELECT * FROM `orders` WHERE `order_id` LIKE '$id' ");
+			$today = date('Y-m-d');
+			$q = mysqli_query($conn,"SELECT * FROM `orders` WHERE `order_id` LIKE '$id' and date like '$today%' ");
 	
 		$sum   = 0 ; 
 		$total = 0 ;

@@ -461,8 +461,10 @@ echo '
 
 	$orderid = 0;
 	$orderidint = 0;
-	
-	$qo = mysqli_query($conn,"SELECT * FROM `orders`");
+
+	$today = date('Y-m-d');
+	 
+	$qo = mysqli_query($conn,"SELECT * FROM `orders` where date like '$today%' ");
 		while ($rowo = mysqli_fetch_array($qo)) {
 			$orderid = $rowo['order_id'];
 			$orderidint = $rowo['order_id'];
@@ -470,7 +472,7 @@ echo '
 
 		
 
-		if(isset($orderid)){
+		if($orderid != 0){
 			$orderid ++ ; 
 			$orderidint = $orderid ;
 			$orderid = "#".$orderid;

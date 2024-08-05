@@ -44,6 +44,8 @@ if(!isset($_SESSION['sid'])){
 			</tr>
 		<?php
 
+		$today = date('Y-m-d');
+
 		// searching for spesific bill number like bill no : 10 
 		if(isset($_POST['search'])){
 
@@ -51,13 +53,14 @@ if(!isset($_SESSION['sid'])){
 
 			if($_POST['bill_no'] == ""){
 
-			$q = mysqli_query($conn,"SELECT * , COUNT(order_id) as items , SUM(sumation) as total FROM `orders` GROUP BY orders.order_id ORDER BY `orders`.`id` DESC");
+			$q = mysqli_query($conn,"SELECT * , COUNT(order_id) as items , SUM(sumation) as total FROM `orders` where date like '$today%' GROUP BY orders.order_id ORDER BY `orders`.`id` DESC");
+
 			}else{
-					$q = mysqli_query($conn,"SELECT * , COUNT(order_id) as items , SUM(sumation) as total FROM `orders` WHERE order_id like '$bill_no' GROUP BY orders.order_id ORDER BY `orders`.`id` DESC");
+					$q = mysqli_query($conn,"SELECT * , COUNT(order_id) as items , SUM(sumation) as total FROM `orders` where date like '$today%' WHERE order_id like '$bill_no' GROUP BY orders.order_id ORDER BY `orders`.`id` DESC");
 			}
 	
 		}else{
-				$q = mysqli_query($conn,"SELECT * , COUNT(order_id) as items  FROM `orders` GROUP BY orders.order_id ORDER BY `orders`.`id` DESC ");
+				$q = mysqli_query($conn,"SELECT * , COUNT(order_id) as items  FROM `orders` where date like '$today%' GROUP BY orders.order_id ORDER BY `orders`.`id` DESC ");
 		}
 	
 	
